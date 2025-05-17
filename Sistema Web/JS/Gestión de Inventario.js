@@ -232,12 +232,6 @@ function salirDelModulo() {
 
 
 
-// Función: Exportar todo
-
-
-
-// Función para exportar tabla (filtrada o completa)
-
 // ✅ Exportar todo a PDF
 function exportarTodoPDF() {
   const productosGuardados = JSON.parse(localStorage.getItem("productos")) || [];
