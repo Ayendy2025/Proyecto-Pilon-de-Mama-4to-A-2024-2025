@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reloj Digital</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #clock {
+            color: #fff;
+            background: rgba(0,0,0,0.7);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            font-size: 64px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            padding: 40px 80px;
+            border: 2px solid #00ffe7;
+            text-shadow: 0 0 20px #00ffe7, 0 0 40px #00ffe7;
+            transition: box-shadow 0.3s;
+        }
+        #clock:hover {
+            box-shadow: 0 0 40px #00ffe7, 0 0 80px #00ffe7;
+        }
+    </style>
+    <script>
+        // Permite personalizar el color y formato del reloj
+        function updateClock() {
+            const now = new Date();
+            let h = now.getHours();
+            const m = now.getMinutes().toString().padStart(2, '0');
+            const s = now.getSeconds().toString().padStart(2, '0');
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12; // El '0' debe ser '12'
+            document.getElementById('clock').textContent = `${h}:${m}:${s} ${ampm}`;
+        }
+
+        function applyCustomization() {
+            const color = document.getElementById('colorPicker').value;
+            document.getElementById('clock').style.color = color;
+        }
+
+        setInterval(updateClock, 1000);
+        window.onload = function() {
+            updateClock();
+            applyCustomization();
+        };
+    </script>
+    <style>
+        #customization {
+            margin-top: 30px;
+            background: rgba(0,0,0,0.5);
+            padding: 18px 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px 0 rgba(0,255,231,0.15);
+            color: #fff;
+            font-size: 18px;
+        }
+        #colorPicker {
+            margin-left: 10px;
+            border: none;
+            width: 40px;
+            height: 30px;
+            background: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">12:00:00 AM</div>
+    <div id="customization">
+        <label for="colorPicker">Color del reloj:</label>
+        <input type="color" id="colorPicker" value="#00ffe7" onchange="applyCustomization()">
+    </div>
+</body>
+</html>
