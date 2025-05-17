@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Carros</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+            background: #111;
+        }
+        #credits {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <div id="score">Puntuación: 0</div>
+    <div id="credits">Creado por <b>Ayendy M.R</b> 🚗💨 | Año 2025</div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let carImage = new Image();
+    carImage.src = 'IMAGENES/meme.png';
+
+    let car = { 
+        x: canvas.width / 2 - 50, 
+        y: canvas.height - 150, 
+        width: 100, 
+        height: 130, 
+        speed: 7 
+    };
+
+    let obstacles = [];
+    let gameOver = false;
+    let score = 0;
+    let obstacleSpeed = 5;
+    let spawnRate = 1500;
+    let keys = {};
+
+    function drawCar() {
+        ctx.drawImage(carImage, car.x, car.y, car.width, car.height);
+    }
+
+    function drawObstacles() {
+        ctx.fillStyle = "blue";
+        obstacles.forEach(obstacle => {
+            ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+        });
+    }
+
+    function updateObstacles() {
+        obstacles.forEach(obstacle => obstacle.y += obstacleSpeed);
+        if (obstacles.length && obstacles[0].y > canvas.height) {
+            obstacles.shift();
+            score++;
+            document.getElementById("score").textContent = `Puntuación: ${score}`;
+            if (score % 5 === 0) {
+                obstacleSpeed += 1;
+                spawnRate = Math.max(500, spawnRate - 100);
+                clearInterval(obstacleInterval);
+                obstacleInterval = setInterval(spawnObstacle, spawnRate);
+            }
+        }
+    }
+
+    function checkCollision() {
+        for (let obs of obstacles) {
+            let buffer = 19;
+            if (
+                car.x + buffer < obs.x + obs.width - buffer &&
+                car.x + car.width - buffer > obs.x + buffer &&
+                car.y + buffer < obs.y + obs.height - buffer &&
+                car.y + car.height - buffer > obs.y + buffer
+            ) {
+                gameOver = true;
+                return;
+            }
+        }
+    }
+
+    function updateCarPosition() {
+        if (keys["ArrowLeft"] && car.x > 0) car.x -= car.speed;
+        if (keys["ArrowRight"] && car.x < canvas.width - car.width) car.x += car.speed;
+        if (keys["ArrowUp"] && car.y > 0) car.y -= car.speed;
+        if (keys["ArrowDown"] && car.y < canvas.height - car.height) car.y += car.speed;
+    }
+
+    function gameLoop() {
+        if (gameOver) {
+            setTimeout(() => {
+                alert("🔥 ¡Juego terminado! Puntuación: " + score + "\n🎮 Creado por Ayendy M.R 🚘");
+                document.location.reload();
+            }, 100);
+            return;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updateCarPosition();
+        drawCar();
+        drawObstacles();
+        updateObstacles();
+        checkCollision();
+        requestAnimationFrame(gameLoop);
+    }
+
+    function handleKeyDown(e) {
+        keys[e.key] = true;
+    }
+
+    function handleKeyUp(e) {
+        keys[e.key] = false;
+    }
+
+    function spawnObstacle() {
+        let x = Math.random() * (canvas.width - 50);
+        obstacles.push({ x, y: -50, width: 50, height: 50 });
+    }
+
+    let obstacleInterval = setInterval(spawnObstacle, spawnRate);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
+    carImage.onload = () => {
+        gameLoop();
+    };
+</script>
+
+    
+</body>
+</html>
