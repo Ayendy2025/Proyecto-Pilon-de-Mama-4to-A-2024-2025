@@ -1,0 +1,102 @@
+
+/* Estilo general */
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Tarjeta de inicio de sesión */
+.login-card {
+  background-color: white;
+  padding: 15px; /* Menos padding */
+  max-width: 320px; /* Ajuste de tamaño */
+  width: 85%;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  margin: 15px;
+}
+
+/* Encabezado de la tarjeta */
+.card-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.card-header h1 {
+  font-size: 1.4em; /* Ajuste de tamaño */
+  margin: 0;
+}
+
+.card-header img {
+  border-radius: 100px;
+  max-width: 80px; /* Imagen más pequeña */
+  margin-bottom: 10px;
+}
+
+/* Estilo de los inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px; /* Ajuste de padding */
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.9em; /* Ajuste de tamaño */
+}
+
+/* Estilo del botón */
+.login-button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px; /* Ajuste de padding */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 0.9em; /* Ajuste de tamaño */
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo de mensajes de error */
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px; /* Mover debajo del checkbox */
+  display: block; /* Para asegurar que esté en una línea separada */
+}
+
+/* Pista de contraseña */
+.password-hint {
+  font-size: 0.8em; /* Ajuste de tamaño */
+  color: #888;
+  margin-top: 5px;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 600px) {
+  .login-card {
+    padding: 10px; /* Ajuste de padding en móviles */
+    max-width: 90vw;
+  }
+
+  .card-header h1 {
+    font-size: 1.2em; /* Ajuste de tamaño en móviles */
+  }
+
+  .card-header img {
+    max-width: 70px; /* Ajuste de tamaño en móviles */
+  }
+}
