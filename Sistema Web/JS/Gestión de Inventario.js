@@ -323,6 +323,7 @@ const doc = new jsPDF(); // NO pongas new jspdf.jsPDF() ni otras variantes
 
 
 
+// Exportar a Excel
 function exportarExcel() {
   const tabla = document.getElementById("tabla-productos");
   const filas = tabla.querySelectorAll("tr");
@@ -349,4 +350,48 @@ function exportarExcel() {
   XLSX.writeFile(wb, "inventario.xlsx");
 
   mostrarNotificacion("📁 Inventario exportado con éxito", "#1D6F42", "Sonido/Guardado.mp3");
+}
+
+
+function exportarBusquedaExcel() {
+  const filtro = document.getElementById("busqueda").value.trim().toLowerCase();
+  const filas = document.querySelectorAll("#tabla-productos tr");
+
+  // Verifica si hay texto filtrado
+  if (filtro === "") {
+    mostrarNotificacion("⚠ Aplica un filtro antes de exportar", "#F24405", "Sonido/error.mp3");
+    return;
+  }
+
+  // Filas visibles (filtradas)
+  const filasVisibles = Array.from(filas).filter(fila =>
+    fila.style.display !== "none" && fila.querySelectorAll("td").length > 0
+  );
+
+  if (filasVisibles.length === 0) {
+    mostrarNotificacion("⚠ No hay resultados para exportar", "#F24405", "Sonido/error.mp3");
+    return;
+  }
+
+  const data = [["Nombre", "Categoría", "Cantidad", "Proveedor"]];
+
+  filasVisibles.forEach(fila => {
+    const celdas = fila.querySelectorAll("td");
+    if (celdas.length >= 4) {
+      data.push([
+        celdas[0].textContent.trim(),
+        celdas[1].textContent.trim(),
+        celdas[2].textContent.trim(),
+        celdas[3].textContent.trim()
+      ]);
+    }
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, "Búsqueda");
+
+  XLSX.writeFile(wb, "inventario_busqueda.xlsx");
+
+  mostrarNotificacion("📁 Búsqueda exportada con éxito", "#1D6F42", "Sonido/Guardado.mp3");
 }
