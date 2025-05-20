@@ -468,11 +468,16 @@ th i {
   background-color: #F24405;
 }
 
-/* Excel con estilo distinto */
+/* Excel con estilo distinto Excel */
 .export-buttons button:nth-child(3) {
   background-color: #1D6F42;
 }
 
 .export-buttons button:nth-child(3):hover {
   background-color: #145833;
+}
+
+/* Excel Exportar Busqueda */
+.export-buttons button:nth-child(4) {
+  background-color: #1D6F42;
 }
