@@ -4,70 +4,37 @@
   <meta charset="UTF-8">
   <title>Gestión de Inventario - El Pilón de Mamá</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="CSS\Gestión de Inventario.css">
+  <link rel="stylesheet" href="CSS/Gestión de Inventario.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="jquery.dataTables/jquery.dataTables.css">
 </head>
 <body>
 
   <div class="container">
-<header>
-  <h1>Gestión de Inventario</h1>
+    <header>
+      <h1>Gestión de Inventario</h1>
+      <div class="acciones-superiores">
+        <i class="fas fa-rotate-left reset-orden" onclick="restablecerOrden()" title="Restablecer tabla"></i>
+        <button class="volver-btn" onclick="salirDelModulo()">
+          <i class="fas fa-arrow-left"></i> Volver al Menú
+        </button>
+        <button class="add-btn" onclick="abrirFormulario()">
+          <i class="fas fa-plus"></i> Agregar Producto
+        </button>
+      </div>
+    </header>
 
-  <div class="acciones-superiores">
-    <i class="fas fa-rotate-left reset-orden" onclick="restablecerOrden()" title="Restablecer tabla"></i>
+    <br>
 
-<button class="volver-btn" onclick="salirDelModulo()">
-  <i class="fas fa-arrow-left"></i> Volver al Menú
-</button>
-
-    
-    <button class="add-btn" onclick="abrirFormulario()">
-      <i class="fas fa-plus"></i> Agregar Producto
-    </button>
-
-    <div class="input-icono">
-      <input type="text" id="busqueda" placeholder="Buscar producto">
-      <i class="fas fa-search"></i>
-    </div>
-  </div>
-</header>
-
-
-<br>
-  <!-- NUEVO BOTÓN DE EXPORTAR -->
-  
-<!-- Botones de Exportar agrupados -->
-<div class="export-buttons">
-  <button onclick="exportarTodoPDF()">
-    <i class="fas fa-file-pdf"></i> Exportar Todo (PDF)
-  </button>
-  <button onclick="exportarFiltradoPDF()">
-    <i class="fas fa-filter"></i> Exportar Búsqueda (PDF)
-  </button>
-  <button onclick="exportarExcel()">
-    <i class="fas fa-file-excel"></i> Exportar Todo (Excel)
-  </button>
-  <button onclick="exportarBusquedaExcel()">
-  <i class="fas fa-file-excel"></i> Exportar Búsqueda (Excel)
-</button>
-
-</div>
-
-
-
-    
     <!-- Tabla de productos -->
-    <table>
+    <table id="mitabla">
       <thead>
         <tr>
           <th>Nombre</th>
           <th>Categoría</th>
-          <th onclick="ordenarPorCantidad()" style="cursor: pointer;">
-          Cantidad <i class="fas fa-sort" id="iconoOrden"></i>
-          </th>
+          <th>Cantidad</th>
           <th>Proveedor</th>
-         <th div class="acciones">Acciones</th></div>
+          <th class="acciones">Acciones</th>
         </tr>
       </thead>
       <tbody id="tabla-productos">
@@ -102,39 +69,24 @@
     </div>
   </div>
 
-   <div id="notificacion" class="notificacion"></div>
+  <div id="notificacion" class="notificacion"></div>
 
-<!-- Confirmación personalizada -->
-<div class="confirm-modal" id="confirm-modal">
-  <div class="confirm-box">
-    <p id="confirm-mensaje">¿Estás seguro de eliminar este producto?</p>
-    <div class="confirm-buttons">
-      <button class="cancelar-btn" onclick="cerrarConfirmacion()">Cancelar</button>
-      <button class="eliminar-btn" onclick="confirmarEliminacion()">Eliminar</button>
+  <!-- Confirmación personalizada -->
+  <div class="confirm-modal" id="confirm-modal">
+    <div class="confirm-box">
+      <p id="confirm-mensaje">¿Estás seguro de eliminar este producto?</p>
+      <div class="confirm-buttons">
+        <button class="cancelar-btn" onclick="cerrarConfirmacion()">Cancelar</button>
+        <button class="eliminar-btn" onclick="confirmarEliminacion()">Eliminar</button>
+      </div>
     </div>
   </div>
-</div>
 
-
-
-<!-- Exportado de Excel -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-  // Inicializa jsPDF para poder usarlo como new jsPDF()
-  window.jsPDF = window.jspdf.jsPDF;
-</script>
-
-<!-- jsPDF AutoTable -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
-<!-- Tu JS principal -->
-<script src="JS/Gestión de Inventario.js"></script>
-
+  <!-- jQuery -->
+  <script src="jquery-3.7.1.min/jquery-3.7.1.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="jquery.dataTables.min.js"></script>
+  <!-- Tu JS principal -->
+  <script src="JS/Gestión de Inventario.js"></script>
 </body>
-
 </html>
-

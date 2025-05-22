@@ -1,3 +1,11 @@
+/* Paleta:
+#74A60A (verde)
+#F2E3D5 (beige fondo)
+#FF6000 (naranja)
+#F24405 (naranja oscuro)
+#262626 (negro/gris oscuro)
+*/
+
 * {
   margin: 0;
   padding: 0;
@@ -8,105 +16,158 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: #F2E3D5;
   padding: 35px;
-  padding-top: 70px; /* mueve el contenedor color crema mas abajo */
+  padding-top: 40px;
 }
 
-/* Contenedor general */
+
+/* Contenedor principal */
 .container {
-  max-width: 1100px; /* El ancho del contenedor */
-  margin: auto;
-  background-color: #ffffff31;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  background: linear-gradient(135deg, #fffbe6 0%, #f2e3d5 100%);
+  padding: 35px 40px 40px 40px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.13);
+  animation: fadeSlideIn 0.5s ease-out;
 }
+
+.container.salida {
+  animation: fadeSlideOut 0.7s ease-out;
+}
+
 
 /* Encabezado */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
+  border-bottom: 2px solid #FF6000;
+  padding-bottom: 18px;
 }
 
 header h1 {
-  color: #74A60A;
-  font-size: 30px;
+  color: #FF6000;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px #ff60002a;
 }
 
-.add-btn {
-  background-color: #FF6000;
-  color: rgb(255, 255, 255);
+
+/* Botones superiores */
+.acciones-superiores {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.add-btn, .volver-btn {
+  background: linear-gradient(90deg, #FF6000 60%, #F24405 100%);
+  color: #fff;
   border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
+  padding: 10px 22px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #ff60002a;
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
-.add-btn i {
+.add-btn:hover, .volver-btn:hover {
+  background: linear-gradient(90deg, #F24405 60%, #FF6000 100%);
+  box-shadow: 0 4px 16px #ff60004a;
+}
+
+.add-btn i, .volver-btn i {
   margin-right: 5px;
 }
 
-.add-btn:hover {
-  background-color: #F24405;
+
+/* Icono de restablecer */
+.reset-orden {
+  font-size: 20px;
+  color: #FF6000;
+  background-color: white;
+  padding: 9px;
+  border-radius: 50%;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
+
+.reset-orden:hover {
+  background-color: #ffe6d0;
+  transform: rotate(-180deg);
+}
+
 
 /* Tabla */
-/* borde de la tabla */
+/* Líneas visibles en la tabla */
 table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: rgb(255, 255, 255);
-  border-radius: 0px; /* borde de la tabla */
+  border-collapse: collapse; /* Cambiado a collapse para líneas continuas */
+  background: #fff;
+  border-radius: 6px;
   overflow: hidden;
-}
-
-
-/* Cambiar color de la priemera linea de la tabla, la que esta en negro */
-thead {
-  background-color: #262626;
-  color: white;
+  box-shadow: 0 2px 16px #00000010;
+  /* Puedes dejar el resto de tus estilos aquí */
 }
 
 th, td {
-  padding: 12px 15px;
-  text-align: left;  
-  border-bottom: 1px solid #161616;  /* horizontal */
-  border-left: 1px solid #161616;   /* vertical */
-  border-right: 1px solid #161616;   /* vertical */
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: 1px solid #26262644; /* Línea sutil usando tu paleta */
 }
 
+/* Si quieres que solo las filas tengan líneas y no columnas, usa solo border-bottom */
 
-.acciones {
-  text-align: center;  
+thead {
+  background: linear-gradient(90deg, #FF6000 60%, #F24405 100%);
+  color: #fff;
 }
 
+th.acciones, td.acciones {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
 
-
-/* fondo de las celdas */
-
+/* Hover para filas de la tabla */
 tbody tr:hover {
-  background-color: #ffe6d0;
-  transition: background-color 0.3s ease;
-}
-
-td button {
-  background-color: #FF6000;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  margin-right: 5px;
+  background-color: #ffe6d0 !important; /* Fondo suave */
+  font-weight: 600; /* Negrita */
+  box-shadow: 0 2px 12px #ff600022;
+  transition: background-color 0.3s, font-weight 0.3s, box-shadow 0.3s;
   cursor: pointer;
-  transition: background 0.3s ease;
-  margin-left: 17%;   /* Separador del apartado de acciones, se puede borrar */
 }
 
-td button:hover {
-  background-color: #F24405;
+
+td.acciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px; /* Espacio entre botones */
+  height: 100%;
 }
+
+td.acciones button {
+  background: linear-gradient(90deg, #FF6000 60%, #F24405 100%);
+  border: none;
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px #ff60002a;
+}
+
+td.acciones button:hover {
+  background: linear-gradient(90deg, #F24405 60%, #FF6000 100%);
+  transform: scale(1.08);
+}
+
 
 /* Modal (formulario) */
 .modal {
@@ -124,9 +185,11 @@ td button:hover {
 .modal-content {
   background-color: white;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 14px;
   width: 90%;
   max-width: 500px;
+  box-shadow: 0 4px 24px #00000030;
+  animation: fadeInModal 0.3s ease;
 }
 
 .modal-content h2 {
@@ -183,127 +246,7 @@ td button:hover {
 }
 
 
-/* Mover el apartado que dice volver al menu y Agregar Producto */
-
-.acciones-superiores {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-/* margin-left: 125px; Separador */
-}
-
-/* Botón Volver al menú */
-.volver-btn {
-  background-color: #FF6000;
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-
-.volver-btn i {
-  margin-right: 5px;
-  
-}
-
-.volver-btn:hover {
-  background-color: #F24405;
-}
-
-
-/* CSS del icono de la lupa */
-
-.buscador {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-#busqueda {
-  padding: 10px 15px;
-  padding-left: 20%;
-  font-size: 16px;
-  width: 100%;
-  max-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  outline: none;
-  transition: border 0.2s ease;
-  margin-top: 0px;
-}
-
-#busqueda:focus {
-  border-color: #FF6000;
-}
-
-/* CSS del icono de la lupa */
-
-.input-icono {
-  position: relative;
-  max-width: 400px;
-}
-
-.input-icono i {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-}
-
-
-/* CSS de los iconos de subir y bajar */
-th i {
-  margin-left: 6px;
-  color: #aaa;
-  transition: transform 0.2s ease;
-}
-
-
-/* Icono de restablecer */
-
-.reset-orden {
-  font-size: 20px;
-  color: #FF6000;
-  background-color: white;
-  padding: 9px 9px 9px 9px;
-  border-radius: 50%;
-  margin-right: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.reset-orden:hover {
-  background-color: #ffe6d0;
-  transform: rotate(-180deg);
-}
-
-
-/* Borrar el fondo azul al dar doble clic */
-
-th {
-  user-select: none;
-}
-
-
-/* Separar los iconos de subir y bajar, esos que estan en la celda Cantidad */
-
-th i {
-  position: relative;
-  left: 15px; /* o el valor que prefieras */
-  color: #aaa;
-  transition: transform 0.2s ease;
-}
-
-
-
-/* Notificacion */
-
+/* Notificación */
 .notificacion {
   position: fixed;
   top: 30px;
@@ -311,8 +254,8 @@ th i {
   background-color: #74A60A;
   color: white;
   padding: 15px 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #74A60A33;
   font-weight: 600;
   opacity: 0;
   pointer-events: none;
@@ -325,11 +268,6 @@ th i {
   opacity: 1;
   transform: translateY(0);
 }
-
-
-
-
-
 
 
 /* Modal de confirmación */
@@ -351,7 +289,7 @@ th i {
   max-width: 400px;
   width: 90%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease;
+  animation: fadeInConfirm 0.3s ease;
 }
 
 .confirm-box p {
@@ -393,14 +331,108 @@ th i {
   background-color: #b83203;
 }
 
-/* Animación fadeIn */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+
+
+/* Otros detalles */
+th {
+  user-select: none;
+}
+
+th i {
+  margin-left: 6px;
+  color: #aaa;
+  transition: transform 0.2s ease;
+  position: relative;
+  left: 15px;
 }
 
 
-/* Animación para entrada */
+/* Espaciado para barra de búsqueda y texto de DataTables */
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length {
+  margin-bottom: 18px;
+  margin-top: 8px;
+}
+
+/* Opcional: separa la tabla del elemento superior */
+#mitabla {
+  margin-top: 18px;
+}
+
+/* Estilo para el paginador */
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  float: none;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 10px 0 0;
+}
+
+.dataTables_wrapper .dataTables_info {
+  margin-right: 20px;
+}
+
+/* Personalizar el input de búsqueda de DataTables */
+.dataTables_wrapper .dataTables_filter input {
+  border: 1.5px solid #FF6000 !important;
+  border-radius: 6px !important;
+  padding: 7px 12px !important;
+  font-size: 1rem !important;
+  background: #fff !important;
+  color: #262626 !important;
+  transition: border-color 0.3s, box-shadow 0.3s !important;
+  outline: none !important;
+  margin-left: 8px !important;
+  box-shadow: 0 2px 8px #ff600012 !important;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+  border-color: #74A60A !important;
+  box-shadow: 0 0 0 2px #74A60A33 !important;
+}
+
+
+/* Paginador DataTables personalizado */
+.dataTables_wrapper .dataTables_paginate {
+  background: #fffbe6;
+  border-radius: 12px;
+  padding: 6px 18px;
+  box-shadow: 0 2px 8px #ff600012;
+  margin-top: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  background: #FF6000;
+  color: #fff !important;
+  border: none;
+  border-radius: 6px;
+  margin: 0 2px;
+  padding: 6px 12px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px #ff600022;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #F24405 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px #F2440555;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  background: #ccc !important;
+  color: #fff !important;
+  opacity: 0.6;
+  cursor: not-allowed !important;
+}
+
+
+/* Ultimas Animaciones */
+
+/* Animación de entrada y salida para el contenedor principal */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
@@ -411,13 +443,6 @@ th i {
     transform: translateY(0);
   }
 }
-
-.container {
-  animation: fadeSlideIn 0.5s ease-out;
-}
-
-
-/* Animación para salida */
 
 @keyframes fadeSlideOut {
   from {
@@ -430,54 +455,80 @@ th i {
   }
 }
 
-.container.salida {
-  animation: fadeSlideOut 0.7s ease-out;
+/* Cuando abres el modal de confirmación para eliminar un producto */
+@keyframes fadeInConfirm {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Cuando abres el modal de agregar o editar un producto */
+@keyframes fadeInModal {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 
-
-
-
-/* Exportar PDF */
-/* Botones de Exportar (PDF y Excel) */
-.export-buttons {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin: 20px 0 10px;
+/* Sombra y bordes de la tabla */
+table {
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #00000018;
 }
 
-.export-buttons button {
-  background-color: #FF6000;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
+/* Input de búsqueda más ancho en pantallas grandes */
+
+.dataTables_wrapper .dataTables_filter input {
+  min-width: 180px !important;
 }
 
-.export-buttons button i {
-  margin-right: 6px;
+/* Media Queries para Responsividad */
+@media (max-width: 700px) {
+  .container {
+    padding: 10px;
+  }
+  table, thead, tbody, th, td, tr {
+    font-size: 0.9rem;
+  }
+  .acciones-superiores {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
-.export-buttons button:hover {
-  background-color: #F24405;
+/* Estilo para el paginador de DataTables */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  border: 2px solid #74A60A !important;
 }
 
-/* Excel con estilo distinto Excel */
-.export-buttons button:nth-child(3) {
-  background-color: #1D6F42;
+/* Animación de notificación */
+
+.notificacion.mostrar {
+  animation: bounceIn 0.5s;
 }
 
-.export-buttons button:nth-child(3):hover {
-  background-color: #145833;
+@keyframes bounceIn {
+  0% { transform: translateY(-40px); opacity: 0; }
+  60% { transform: translateY(10px); opacity: 1; }
+  100% { transform: translateY(0); }
 }
 
-/* Excel Exportar Busqueda */
-.export-buttons button:nth-child(4) {
-  background-color: #1D6F42;
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, border 0.2s;
 }
+
+.dataTables_wrapper .dataTables_filter input::placeholder {
+  color: #FF6000;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+
+.modal-content {
+  box-shadow: 0 8px 32px #00000030;
+}
+
+tbody tr.selected, tbody tr.selected:hover {
+  background-color: #74A60A !important;
+  color: #fff;
+}
+
