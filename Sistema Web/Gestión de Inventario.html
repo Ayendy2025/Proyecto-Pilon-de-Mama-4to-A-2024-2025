@@ -14,12 +14,17 @@
     <header>
       <h1>Gestión de Inventario</h1>
       <div class="acciones-superiores">
-        <i class="fas fa-rotate-left reset-orden" onclick="restablecerOrden()" title="Restablecer tabla"></i>
         <button class="volver-btn" onclick="salirDelModulo()">
           <i class="fas fa-arrow-left"></i> Volver al Menú
         </button>
         <button class="add-btn" onclick="abrirFormulario()">
           <i class="fas fa-plus"></i> Agregar Producto
+        </button>
+        <button class="eliminados-btn" onclick="window.location.href='Productos_Eliminados.html'">
+          <i class="fas fa-trash-restore"></i> Ver Eliminados
+        </button>
+        <button class="recargar-btn" onclick="location.reload()">
+          <i class="fas fa-sync-alt"></i> Recargar
         </button>
       </div>
     </header>

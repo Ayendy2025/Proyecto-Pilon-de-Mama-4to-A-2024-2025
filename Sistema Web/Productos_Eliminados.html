@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Productos Eliminados - El Pilón de Mamá</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="CSS/Productos_Eliminados.css">  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="CSS/jquery.dataTables.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Productos Eliminados</h1>
+      <div class="acciones-superiores">
+        <button class="volver-btn" onclick="window.location.href='Gestión de Inventario.html'">
+          <i class="fas fa-arrow-left"></i> Volver a Inventario
+        </button>
+
+        <button class="recargar-btn" onclick="location.reload()">
+        <i class="fas fa-sync-alt"></i> Recargar
+        </button>
+      </div>
+    </header>
+
+    <br>
+
+    <!-- Tabla de productos eliminados -->
+    <table id="tablaEliminados">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Cantidad</th>
+          <th>Proveedor</th>
+          <th class="acciones">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyEliminados">
+        <!-- Los productos eliminados se cargarán aquí -->
+      </tbody>
+    </table>
+  </div>
+<!-- Modal de confirmación para eliminar definitivamente -->
+<div class="confirm-modal" id="confirm-modal-eliminar">
+  <div class="confirm-box">
+    <p id="confirm-mensaje-eliminar">¿Eliminar este producto de forma permanente?</p>
+    <div class="confirm-buttons">
+      <button class="cancelar-btn" onclick="cerrarConfirmacionEliminar()">Cancelar</button>
+      <button class="eliminar-btn" onclick="confirmarEliminacionDefinitiva()">Eliminar</button>
+    </div>
+  </div>
+</div>
+  <!-- jQuery -->
+  <script src="JS/jquery-3.7.1.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="JS/jquery.dataTables.min.js"></script>
+  <!-- JS para productos eliminados (lo crearás después) -->
+  <script src="JS/Productos_Eliminados.js"></script>
+</body>
+</html>

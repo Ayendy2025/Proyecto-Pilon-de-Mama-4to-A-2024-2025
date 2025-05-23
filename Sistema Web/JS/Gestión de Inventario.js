@@ -38,16 +38,17 @@ function mostrarProductos() {
     tabla.appendChild(fila);
   });
 
-  // Reinicializar DataTable
-  let table = $('#mitabla').DataTable({
-    language: {
-      url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
-    },
-    columnDefs: [
-      { orderable: false, targets: -1 }
-    ],
-    order: []
-  });
+// Cambia esto en tu inicialización de DataTable:
+let table = $('#mitabla').DataTable({
+  language: {
+    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+  },
+  columnDefs: [
+    { orderable: false, targets: -1 }
+  ],
+  order: [],
+  stateSave: false // <-- Cambia a false o elimina esta línea
+});
 
   // Volver a la página anterior si aplica
   table.page(paginaActual).draw('page');
@@ -119,10 +120,16 @@ function cerrarConfirmacion() {
 
 function confirmarEliminacion() {
   if (indiceEliminar !== null) {
+    // 1. Obtener productos eliminados actuales
+    let productosEliminados = JSON.parse(localStorage.getItem("productosEliminados")) || [];
+    // 2. Mover el producto eliminado a la lista de eliminados
+    productosEliminados.push(productos[indiceEliminar]);
+    localStorage.setItem("productosEliminados", JSON.stringify(productosEliminados));
+    // 3. Eliminar el producto de la lista activa
     productos.splice(indiceEliminar, 1);
     localStorage.setItem("productos", JSON.stringify(productos));
     mostrarProductos();
-    mostrarNotificacion("🗑 Producto eliminado", "#F24405", "Sonido/Eliminado.mp3");
+    mostrarNotificacion("🗑 Producto archivado en eliminados", "#F24405", "Sonido/Eliminado.mp3");
   }
   cerrarConfirmacion();
 }
@@ -153,65 +160,7 @@ function salirDelModulo() {
   }, 550);
 }
 
-// Restablecer tabla (adaptado a DataTables)
-function restablecerOrden() {
-  productos = JSON.parse(localStorage.getItem("productos")) || [];
-  mostrarProductos();
-
-  // Reiniciar el ícono de orden si existe
-  const icono = document.getElementById("iconoOrden");
-  if (icono) {
-    icono.classList.remove("fa-sort-up", "fa-sort-down");
-    icono.classList.add("fa-sort");
-  }
-}
-
-// Inicialización de DataTable y control de orden triple
+// Inicialización de DataTable
 $(document).ready(function() {
   mostrarProductos();
-
-  // Guarda el orden original de los datos
-  let productosOriginal = JSON.parse(localStorage.getItem("productos")) || [];
-
-  // Controla los clics en los encabezados
-  let clickCount = {};
-  $('#mitabla thead').on('click', 'th', function() {
-    var colIdx = $(this).index();
-    clickCount[colIdx] = (clickCount[colIdx] || 0) + 1;
-
-    if (clickCount[colIdx] === 3) {
-      // Guarda el primer elemento visible y la página actual
-      var table = $('#mitabla').DataTable();
-      var primerElemento = table.row(':eq(0)', { page: 'current' }).data();
-      var paginaActual = table.page();
-
-      // 1. Destruye DataTable
-      table.clear().destroy();
-      // 2. Repinta la tabla con los datos originales
-      productos = [...productosOriginal];
-      mostrarProductos();
-      // 3. Vuelve a inicializar DataTable (ya lo hace mostrarProductos)
-
-      // 4. Busca en qué página está el primer elemento visible anterior
-      table = $('#mitabla').DataTable();
-      if (primerElemento) {
-        table.rows().every(function(rowIdx, tableLoop, rowLoop) {
-          if (JSON.stringify(this.data()) === JSON.stringify(primerElemento)) {
-            var nuevaPagina = Math.floor(rowIdx / table.page.len());
-            table.page(nuevaPagina).draw('page');
-          }
-        });
-      } else {
-        table.page(paginaActual).draw('page');
-      }
-
-      clickCount[colIdx] = 0;
-    } else {
-      // Solo reinicia los contadores de las otras columnas
-      for (let key in clickCount) {
-        if (parseInt(key) !== colIdx) clickCount[key] = 0;
-      }
-    }
-  });
 });
-
