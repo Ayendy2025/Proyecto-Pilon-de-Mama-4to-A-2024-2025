@@ -17,6 +17,7 @@ function mostrarEliminados() {
   productosEliminados.forEach((prod, index) => {
     const fila = document.createElement("tr");
     fila.innerHTML = `
+      <td>${prod.id || '-'}</td>
       <td>${prod.nombre}</td>
       <td>${prod.categoria}</td>
       <td>${prod.cantidad}</td>
@@ -73,6 +74,7 @@ function confirmarEliminacionDefinitiva() {
   }
   cerrarConfirmacionEliminar();
 }
+
 
 // Notificación visual
 function mostrarNotificacion(mensaje, color = "#FF6000") {

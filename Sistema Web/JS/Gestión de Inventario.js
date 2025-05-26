@@ -10,12 +10,19 @@ const inputCategoria = document.getElementById("categoria");
 const inputCantidad = document.getElementById("cantidad");
 const inputProveedor = document.getElementById("proveedor");
 
-// Cargar datos al iniciar
+// Cargar productos al iniciar
 let productos = JSON.parse(localStorage.getItem("productos")) || [];
 
-// Mostrar productos en la tabla y reinicializar DataTable
+// Generador de ID
+function generarID() {
+  let ultimoID = parseInt(localStorage.getItem("ultimoID")) || 0;
+  ultimoID++;
+  localStorage.setItem("ultimoID", ultimoID);
+  return ultimoID;
+}
+
+// Mostrar productos en la tabla
 function mostrarProductos() {
-  // Guarda la página actual si DataTable ya está inicializado
   let paginaActual = 0;
   if ($.fn.DataTable.isDataTable('#mitabla')) {
     paginaActual = $('#mitabla').DataTable().page();
@@ -26,6 +33,7 @@ function mostrarProductos() {
   productos.forEach((prod, index) => {
     const fila = document.createElement("tr");
     fila.innerHTML = `
+      <td>${prod.id || "-"}</td>
       <td>${prod.nombre}</td>
       <td>${prod.categoria}</td>
       <td>${prod.cantidad}</td>
@@ -38,19 +46,15 @@ function mostrarProductos() {
     tabla.appendChild(fila);
   });
 
-// Cambia esto en tu inicialización de DataTable:
-let table = $('#mitabla').DataTable({
-  language: {
-    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
-  },
-  columnDefs: [
-    { orderable: false, targets: -1 }
-  ],
-  order: [],
-  stateSave: false // <-- Cambia a false o elimina esta línea
-});
+  const table = $('#mitabla').DataTable({
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+    },
+    columnDefs: [{ orderable: false, targets: -1 }],
+    order: [],
+    stateSave: false
+  });
 
-  // Volver a la página anterior si aplica
   table.page(paginaActual).draw('page');
 }
 
@@ -67,23 +71,25 @@ function cerrarFormulario() {
   modal.style.display = "none";
 }
 
-// Guardar producto (crear o editar)
+// Guardar producto
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const nuevoProducto = {
+  const indice = indiceEditar.value;
+
+  let nuevoProducto = {
     nombre: inputNombre.value.trim(),
     categoria: inputCategoria.value.trim(),
     cantidad: parseInt(inputCantidad.value),
     proveedor: inputProveedor.value.trim()
   };
 
-  const indice = indiceEditar.value;
-
   if (indice === "") {
-    productos.push(nuevoProducto); // Crear
+    nuevoProducto.id = generarID(); // SOLO cuando se crea
+    productos.push(nuevoProducto);
   } else {
-    productos[indice] = nuevoProducto; // Editar
+    nuevoProducto.id = productos[indice].id; // Mantener ID al editar
+    productos[indice] = nuevoProducto;
   }
 
   localStorage.setItem("productos", JSON.stringify(productos));
@@ -120,12 +126,10 @@ function cerrarConfirmacion() {
 
 function confirmarEliminacion() {
   if (indiceEliminar !== null) {
-    // 1. Obtener productos eliminados actuales
     let productosEliminados = JSON.parse(localStorage.getItem("productosEliminados")) || [];
-    // 2. Mover el producto eliminado a la lista de eliminados
     productosEliminados.push(productos[indiceEliminar]);
     localStorage.setItem("productosEliminados", JSON.stringify(productosEliminados));
-    // 3. Eliminar el producto de la lista activa
+
     productos.splice(indiceEliminar, 1);
     localStorage.setItem("productos", JSON.stringify(productos));
     mostrarProductos();
@@ -151,7 +155,7 @@ function mostrarNotificacion(mensaje, color = "#FF6000", sonidoURL = null) {
   }, 3000);
 }
 
-// Animación de salida
+// Salida animada
 function salirDelModulo() {
   const contenedor = document.querySelector(".container");
   contenedor.classList.add("salida");
@@ -160,7 +164,7 @@ function salirDelModulo() {
   }, 550);
 }
 
-// Inicialización de DataTable
-$(document).ready(function() {
+// Inicializar
+$(document).ready(function () {
   mostrarProductos();
 });
