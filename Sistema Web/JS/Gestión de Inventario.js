@@ -10,15 +10,50 @@ const inputCategoria = document.getElementById("categoria");
 const inputCantidad = document.getElementById("cantidad");
 const inputProveedor = document.getElementById("proveedor");
 
-// Cargar productos al iniciar
-let productos = JSON.parse(localStorage.getItem("productos")) || [];
+// Array para almacenar productos en memoria
+let productos = [];
 
-// Generador de ID
-function generarID() {
-  let ultimoID = parseInt(localStorage.getItem("ultimoID")) || 0;
-  ultimoID++;
-  localStorage.setItem("ultimoID", ultimoID);
-  return ultimoID;
+// URL base de los archivos PHP
+const URL_BASE = 'PHP/';
+
+// Función para hacer peticiones AJAX
+async function hacerPeticion(url, metodo = 'GET', datos = null) {
+  try {
+    const opciones = {
+      method: metodo,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    if (datos && metodo !== 'GET') {
+      opciones.body = JSON.stringify(datos);
+    }
+
+    const respuesta = await fetch(url, opciones);
+    const resultado = await respuesta.json();
+
+    if (!resultado.exito) {
+      throw new Error(resultado.mensaje || 'Error en la petición');
+    }
+
+    return resultado;
+  } catch (error) {
+    console.error('Error en petición:', error);
+    throw error;
+  }
+}
+
+// Cargar productos desde la base de datos
+async function cargarProductos() {
+  try {
+    const resultado = await hacerPeticion(URL_BASE + 'obtener_productos.php');
+    productos = resultado.datos || [];
+    mostrarProductos();
+  } catch (error) {
+    mostrarNotificacion("❌ Error al cargar productos: " + error.message, "#F24405");
+    console.error('Error cargando productos:', error);
+  }
 }
 
 // Mostrar productos en la tabla
@@ -72,30 +107,44 @@ function cerrarFormulario() {
 }
 
 // Guardar producto
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const indice = indiceEditar.value;
-
-  let nuevoProducto = {
+  
+  // Preparar datos del producto
+  let datosProducto = {
     nombre: inputNombre.value.trim(),
     categoria: inputCategoria.value.trim(),
     cantidad: parseInt(inputCantidad.value),
     proveedor: inputProveedor.value.trim()
   };
 
-  if (indice === "") {
-    nuevoProducto.id = generarID(); // SOLO cuando se crea
-    productos.push(nuevoProducto);
-  } else {
-    nuevoProducto.id = productos[indice].id; // Mantener ID al editar
-    productos[indice] = nuevoProducto;
+  // Si estamos editando, agregar el ID
+  if (indice !== "") {
+    datosProducto.id = productos[indice].id;
   }
 
-  localStorage.setItem("productos", JSON.stringify(productos));
-  mostrarProductos();
-  cerrarFormulario();
-  mostrarNotificacion("✅ Producto guardado con éxito", "#74A60A", "Sonido/Guardado.mp3");
+  try {
+    // Enviar datos al servidor
+    const resultado = await hacerPeticion(
+      URL_BASE + 'guardar_producto.php', 
+      'POST', 
+      datosProducto
+    );
+
+    // Recargar productos desde la base de datos
+    await cargarProductos();
+    
+    cerrarFormulario();
+    
+    const mensaje = indice === "" ? "✅ Producto agregado con éxito" : "✅ Producto actualizado con éxito";
+    mostrarNotificacion(mensaje, "#74A60A", "Sonido/Guardado.mp3");
+
+  } catch (error) {
+    mostrarNotificacion("❌ Error al guardar: " + error.message, "#F24405");
+    console.error('Error guardando producto:', error);
+  }
 });
 
 // Editar producto
@@ -124,16 +173,27 @@ function cerrarConfirmacion() {
   indiceEliminar = null;
 }
 
-function confirmarEliminacion() {
+async function confirmarEliminacion() {
   if (indiceEliminar !== null) {
-    let productosEliminados = JSON.parse(localStorage.getItem("productosEliminados")) || [];
-    productosEliminados.push(productos[indiceEliminar]);
-    localStorage.setItem("productosEliminados", JSON.stringify(productosEliminados));
+    try {
+      const producto = productos[indiceEliminar];
+      
+      // Enviar petición de eliminación al servidor
+      await hacerPeticion(
+        URL_BASE + 'eliminar_producto.php', 
+        'POST', 
+        { id: producto.id }
+      );
 
-    productos.splice(indiceEliminar, 1);
-    localStorage.setItem("productos", JSON.stringify(productos));
-    mostrarProductos();
-    mostrarNotificacion("🗑 Producto archivado en eliminados", "#F24405", "Sonido/Eliminado.mp3");
+      // Recargar productos desde la base de datos
+      await cargarProductos();
+      
+      mostrarNotificacion("🗑 Producto archivado en eliminados", "#F24405", "Sonido/Eliminado.mp3");
+      
+    } catch (error) {
+      mostrarNotificacion("❌ Error al eliminar: " + error.message, "#F24405");
+      console.error('Error eliminando producto:', error);
+    }
   }
   cerrarConfirmacion();
 }
@@ -147,7 +207,7 @@ function mostrarNotificacion(mensaje, color = "#FF6000", sonidoURL = null) {
 
   if (sonidoURL) {
     const audio = new Audio(sonidoURL);
-    audio.play();
+    audio.play().catch(e => console.log('No se pudo reproducir el sonido:', e));
   }
 
   setTimeout(() => {
@@ -164,7 +224,17 @@ function salirDelModulo() {
   }, 550);
 }
 
-// Inicializar
+// Función para recargar productos (botón recargar)
+async function recargarProductos() {
+  try {
+    await cargarProductos();
+    mostrarNotificacion("🔄 Productos recargados", "#74A60A");
+  } catch (error) {
+    mostrarNotificacion("❌ Error al recargar productos", "#F24405");
+  }
+}
+
+// Inicializar - Cargar productos al abrir la página
 $(document).ready(function () {
-  mostrarProductos();
+  cargarProductos();
 });
