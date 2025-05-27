@@ -16,7 +16,7 @@ try {
     // Consulta para obtener todos los productos
     $sql = "SELECT id, nombre, categoria, cantidad, proveedor, fecha_creacion, fecha_actualizacion 
             FROM productos 
-            ORDER BY id DESC";
+            ORDER BY id ASC";
     
     $stmt = $conexion->prepare($sql);
     $stmt->execute();
