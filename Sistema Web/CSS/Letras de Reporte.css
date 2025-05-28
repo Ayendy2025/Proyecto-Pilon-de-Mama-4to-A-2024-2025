@@ -609,3 +609,23 @@ td.acciones button i {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+.dt-button {
+  background: linear-gradient(90deg, #FF6000 60%, #F24405 100%) !important;
+  color: white !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  font-size: 1rem !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #ff60002a;
+  transition: background 0.3s, transform 0.2s;
+  margin: 10px 10px 10px 0 !important;
+}
+
+.dt-button:hover {
+  background: linear-gradient(90deg, #F24405 60%, #FF6000 100%) !important;
+  transform: scale(1.05);
+}

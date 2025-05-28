@@ -17,25 +17,24 @@ $(document).ready(function () {
           ],
           dom: 'Bfrtip',
           buttons: [
-  {
-    extend: 'excelHtml5',
-    text: '<i class="fas fa-file-excel"></i> Excel',
-    className: 'add-btn'
-  },
-  {
-    extend: 'pdfHtml5',
-    text: '<i class="fas fa-file-pdf"></i> PDF',
-    className: 'eliminados-btn',
-    orientation: 'landscape',
-    pageSize: 'A4'
-  },
-  {
-    extend: 'print',
-    text: '<i class="fas fa-print"></i> Imprimir',
-    className: 'recargar-btn'
-  }
-]
-,
+            {
+              extend: 'excelHtml5',
+              text: '<i class="fas fa-file-excel"></i> Excel',
+              className: 'add-btn'
+            },
+            {
+              extend: 'pdfHtml5',
+              text: '<i class="fas fa-file-pdf"></i> PDF',
+              className: 'eliminados-btn',
+              orientation: 'landscape',
+              pageSize: 'A4'
+            },
+            {
+              extend: 'print',
+              text: '<i class="fas fa-print"></i> Imprimir',
+              className: 'recargar-btn'
+            }
+          ],
           language: {
             url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
           }
