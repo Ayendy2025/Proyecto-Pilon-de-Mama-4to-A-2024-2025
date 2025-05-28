@@ -178,24 +178,44 @@ async function confirmarEliminacion() {
     try {
       const producto = productos[indiceEliminar];
       
+      // Mostrar indicador de carga (opcional)
+      mostrarNotificacion("⏳ Eliminando producto...", "#FF6000");
+      
       // Enviar petición de eliminación al servidor
-      await hacerPeticion(
+      const resultado = await hacerPeticion(
         URL_BASE + 'eliminar_producto.php', 
         'POST', 
         { id: producto.id }
       );
 
+      // Cerrar modal de confirmación inmediatamente
+      cerrarConfirmacion();
+      
       // Recargar productos desde la base de datos
       await cargarProductos();
       
+      // Mostrar notificación de éxito
       mostrarNotificacion("🗑 Producto archivado en eliminados", "#F24405", "Sonido/Eliminado.mp3");
       
     } catch (error) {
-      mostrarNotificacion("❌ Error al eliminar: " + error.message, "#F24405");
+      // Cerrar modal incluso si hay error
+      cerrarConfirmacion();
+      
+      // Mostrar error específico
       console.error('Error eliminando producto:', error);
+      mostrarNotificacion("❌ Error al eliminar: " + error.message, "#F24405");
+      
+      // Intentar recargar productos de todas formas para sincronizar
+      try {
+        await cargarProductos();
+      } catch (reloadError) {
+        console.error('Error recargando después del fallo:', reloadError);
+      }
     }
+  } else {
+    // Si no hay índice, solo cerrar el modal
+    cerrarConfirmacion();
   }
-  cerrarConfirmacion();
 }
 
 // Notificación
