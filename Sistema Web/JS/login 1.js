@@ -1,12 +1,53 @@
+// Mostrar / Ocultar contraseña
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const passwordIcon = document.getElementById("password-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    passwordIcon.classList.remove("fa-eye-slash");
+    passwordIcon.classList.add("fa-eye");
+  } else {
+    passwordInput.type = "password";
+    passwordIcon.classList.remove("fa-eye");
+    passwordIcon.classList.add("fa-eye-slash");
+  }
+}
+
+// Validaciones visuales
+const usernameError = document.createElement("span");
+const emailError = document.createElement("span");
+[usernameError, emailError].forEach(el => {
+  el.style.color = "red";
+  el.style.fontSize = "0.9em";
+});
+
+document.getElementById("username").parentElement.appendChild(usernameError);
+document.getElementById("email").parentElement.appendChild(emailError);
+
+const passwordInput = document.getElementById("password");
+const passwordHint = document.getElementById("password-hint");
+
+passwordInput.addEventListener("input", () => {
+  const len = passwordInput.value.length;
+  if (len < 8) {
+    passwordHint.textContent = `Mínimo 8 caracteres (${8 - len} más)`;
+    passwordHint.style.color = "red";
+  } else {
+    passwordHint.textContent = "¡Buena contraseña!";
+    passwordHint.style.color = "#888";
+  }
+});
+
+// Registro con PHP
 function registrarUsuario(event) {
   event.preventDefault();
 
   const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const button = document.querySelector(".login-button"); // ← AQUÍ LA CLAVE
+  const button = document.querySelector(".login-button");
 
-  // Limpiar errores
   usernameError.textContent = "";
   emailError.textContent = "";
   passwordHint.textContent = "";
@@ -35,7 +76,7 @@ function registrarUsuario(event) {
   button.textContent = "Procesando...";
   button.disabled = true;
 
-  fetch("registrar_usuario.php", {
+  fetch("PHP/registrar_usuario.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

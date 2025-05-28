@@ -63,3 +63,8 @@ try {
     die("Error de conexión: " . $e->getMessage());
 }
 ?>
+
+<?php
+$conexion = new PDO("mysql:host=localhost;dbname=sistema_pilon_mama", "root", "");
+$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+?>

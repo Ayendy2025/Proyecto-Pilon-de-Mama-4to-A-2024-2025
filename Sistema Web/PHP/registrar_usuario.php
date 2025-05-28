@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'conexion.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -12,14 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Obtener los datos JSON del cuerpo de la petición
 $datos = json_decode(file_get_contents('php://input'), true);
 
 $nombre = trim($datos['username'] ?? '');
 $correo = trim($datos['email'] ?? '');
 $clave = trim($datos['password'] ?? '');
 
-// Validación básica
 if (empty($nombre) || empty($correo) || empty($clave)) {
     echo json_encode([
         'exito' => false,
@@ -29,7 +30,6 @@ if (empty($nombre) || empty($correo) || empty($clave)) {
 }
 
 try {
-    // Verificar si ya existe el correo
     $consulta = $conexion->prepare("SELECT id FROM usuarios WHERE correo = ?");
     $consulta->execute([$correo]);
 
@@ -41,23 +41,21 @@ try {
         exit;
     }
 
-    // Encriptar contraseña
-   $claveEncriptada = password_hash($clave, PASSWORD_BCRYPT);
+    $claveEncriptada = password_hash($clave, PASSWORD_BCRYPT);
+    $insertar = $conexion->prepare("INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)");
+    $insertar->execute([$nombre, $correo, $claveEncriptada]);
 
-// Insertar nuevo usuario (usa "contraseña" en vez de "clave")
-// Insertar nuevo usuario (usa "contraseña" en vez de "clave")
-$insertar = $conexion->prepare("INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)");
-$insertar->execute([$nombre, $correo, $claveEncriptada]);
-
-echo json_encode([
-    'exito' => true,
-    'mensaje' => 'Usuario registrado con éxito'
-]);
+    echo json_encode([
+        'exito' => true,
+        'mensaje' => 'Usuario registrado con éxito'
+    ]);
 
 } catch (PDOException $e) {
     echo json_encode([
         'exito' => false,
         'mensaje' => 'Error de servidor: ' . $e->getMessage()
     ]);
+
 }
+
 ?>
