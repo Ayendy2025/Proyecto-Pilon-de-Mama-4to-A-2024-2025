@@ -10,6 +10,9 @@ const URL_BASE = 'PHP/';
 // Variables para confirmaciones
 let indiceEliminarDef = null;
 
+// Variable global para mantener la instancia de DataTable
+let tablaDataTableEliminados = null;
+
 // Función para hacer peticiones AJAX
 async function hacerPeticion(url, metodo = 'GET', datos = null) {
   try {
@@ -52,12 +55,28 @@ async function cargarProductosEliminados() {
 
 // Mostrar productos eliminados en la tabla
 function mostrarEliminados() {
-  let paginaActual = 0;
-  if ($.fn.DataTable.isDataTable('#tablaEliminados')) {
-    paginaActual = $('#tablaEliminados').DataTable().page();
-    $('#tablaEliminados').DataTable().clear().destroy();
+  // Guardar estado actual si la tabla ya existe
+  let estadoGuardado = {
+    pagina: 0,
+    busqueda: '',
+    orden: [],
+    longitudPagina: 10
+  };
+  
+  if (tablaDataTableEliminados && $.fn.DataTable.isDataTable('#tablaEliminados')) {
+    estadoGuardado = {
+      pagina: tablaDataTableEliminados.page(),
+      busqueda: tablaDataTableEliminados.search(),
+      orden: tablaDataTableEliminados.order(),
+      longitudPagina: tablaDataTableEliminados.page.len()
+    };
+    
+    // Destruir la tabla existente
+    tablaDataTableEliminados.clear().destroy();
+    tablaDataTableEliminados = null;
   }
 
+  // Limpiar y regenerar el contenido de la tabla
   tbodyEliminados.innerHTML = "";
   productosEliminados.forEach((prod, index) => {
     const fila = document.createElement("tr");
@@ -75,18 +94,49 @@ function mostrarEliminados() {
     tbodyEliminados.appendChild(fila);
   });
 
-  const table = $('#tablaEliminados').DataTable({
+  // Reinicializar DataTable con configuración mejorada
+  tablaDataTableEliminados = $('#tablaEliminados').DataTable({
     language: {
       url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
     },
     columnDefs: [
-      { orderable: false, targets: -1 }
+      { 
+        orderable: false, 
+        targets: -1, // Última columna (Acciones)
+        width: "120px", // Ancho fijo para columna de acciones
+        className: "text-center"
+      },
+      {
+        targets: 0, // Primera columna (ID)
+        width: "60px"
+      },
+      {
+        targets: 3, // Columna cantidad
+        width: "80px",
+        className: "text-center"
+      }
     ],
-    order: [],
-    stateSave: false
+    order: estadoGuardado.orden.length > 0 ? estadoGuardado.orden : [[0, 'asc']], // Orden por ID por defecto
+    pageLength: estadoGuardado.longitudPagina,
+    stateSave: false, // Mantener en false para control manual
+    autoWidth: false, // Desactivar auto-width para mejor control
+    responsive: false, // Desactivar responsive para mantener consistencia
+    searching: true,
+    paging: true,
+    info: true,
+    drawCallback: function(settings) {
+      // Callback que se ejecuta después de cada redibujado
+      // Aquí podrías agregar lógica adicional si necesitas
+    }
   });
 
-  table.page(paginaActual).draw('page');
+  // Restaurar el estado guardado
+  if (estadoGuardado.busqueda) {
+    tablaDataTableEliminados.search(estadoGuardado.busqueda);
+  }
+  
+  // Ir a la página guardada y redibujar
+  tablaDataTableEliminados.page(estadoGuardado.pagina).draw('page');
 }
 
 // Restaurar producto eliminado
@@ -130,6 +180,12 @@ async function confirmarEliminacionDefinitiva() {
     try {
       const producto = productosEliminados[indiceEliminarDef];
       
+      // Mostrar indicador de carga (opcional)
+      mostrarNotificacion("⏳ Eliminando producto definitivamente...", "#FF6000");
+      
+      // Cerrar modal de confirmación inmediatamente
+      cerrarConfirmacionEliminar();
+      
       // Enviar petición de eliminación definitiva al servidor
       await hacerPeticion(
         URL_BASE + 'eliminar_definitivo.php', 
@@ -143,11 +199,24 @@ async function confirmarEliminacionDefinitiva() {
       mostrarNotificacion("🗑 Producto eliminado permanentemente", "#F24405", "Sonido/Eliminado.mp3");
       
     } catch (error) {
-      mostrarNotificacion("❌ Error al eliminar definitivamente: " + error.message, "#F24405");
+      // Cerrar modal incluso si hay error
+      cerrarConfirmacionEliminar();
+      
+      // Mostrar error específico
       console.error('Error eliminando definitivamente:', error);
+      mostrarNotificacion("❌ Error al eliminar definitivamente: " + error.message, "#F24405");
+      
+      // Intentar recargar productos de todas formas para sincronizar
+      try {
+        await cargarProductosEliminados();
+      } catch (reloadError) {
+        console.error('Error recargando después del fallo:', reloadError);
+      }
     }
+  } else {
+    // Si no hay índice, solo cerrar el modal
+    cerrarConfirmacionEliminar();
   }
-  cerrarConfirmacionEliminar();
 }
 
 // Notificación visual
@@ -185,5 +254,13 @@ async function recargarProductosEliminados() {
 
 // Inicializar - Cargar productos eliminados al abrir la página
 $(document).ready(function () {
+  // Cargar productos eliminados al inicializar
   cargarProductosEliminados();
+  
+  // Prevenir que el formulario se cierre con ESC accidentalmente durante las operaciones
+  $(document).on('keydown', function(e) {
+    if (e.key === 'Escape' && !$('#confirm-modal-eliminar').is(':visible')) {
+      // Solo permitir ESC si no hay modales abiertos
+    }
+  });
 });

@@ -563,7 +563,6 @@ th i {
   width: 80px !important;
   min-width: 80px !important;
   max-width: 80px !important;
-  text-align: center !important;
 }
 
 #mitabla th:nth-child(5), 
