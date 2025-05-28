@@ -4,7 +4,7 @@ require_once 'conexion.php';
 
 // Configurar headers para permitir peticiones AJAX
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Manejar peticiones OPTIONS (preflight)
@@ -12,9 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-// Verificar que sea una petición POST o DELETE
-if ($_SERVER['REQUEST_METHOD'] != 'POST' && $_SERVER['REQUEST_METHOD'] != 'DELETE') {
-    responderJSON([], false, "Método no permitido. Use POST o DELETE.");
+// Verificar que sea una petición POST
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+    responderJSON([], false, "Método no permitido. Use POST.");
 }
 
 try {
@@ -39,7 +39,7 @@ try {
     }
     
     // Primero verificar si el producto existe y obtener sus datos
-    $sqlVerificar = "SELECT id, nombre, categoria, cantidad, proveedor 
+    $sqlVerificar = "SELECT id, nombre, categoria, cantidad, proveedor, fecha_creacion, fecha_actualizacion
                      FROM productos 
                      WHERE id = :id";
     
@@ -53,47 +53,45 @@ try {
         responderJSON([], false, "Producto no encontrado");
     }
     
-    // Iniciar transacción para manejar la eliminación y el archivo
+    // Iniciar transacción para mover el producto a eliminados
     $conexion->beginTransaction();
     
     try {
-        // Crear tabla de productos eliminados si no existe
-        $sqlCrearTabla = "CREATE TABLE IF NOT EXISTS productos_eliminados (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            producto_id_original INT NOT NULL,
-            nombre VARCHAR(100) NOT NULL,
-            categoria VARCHAR(100) NOT NULL,
-            cantidad INT NOT NULL,
-            proveedor VARCHAR(100) NOT NULL,
-            fecha_eliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            fecha_creacion_original TIMESTAMP NULL,
-            fecha_actualizacion_original TIMESTAMP NULL
-        )";
+        // Insertar en la tabla de productos eliminados
+        $sqlEliminar = "INSERT INTO productos_eliminados 
+                        (producto_id_original, nombre, categoria, cantidad, proveedor, 
+                         fecha_creacion_original, fecha_actualizacion_original, fecha_eliminacion)
+                        VALUES (:producto_id, :nombre, :categoria, :cantidad, :proveedor, 
+                                :fecha_creacion, :fecha_actualizacion, CURRENT_TIMESTAMP)";
         
-        $conexion->exec($sqlCrearTabla);
-        
-        // Insertar en productos_eliminados
-        $sqlArchivar = "INSERT INTO productos_eliminados 
-                        (producto_id_original, nombre, categoria, cantidad, proveedor, fecha_creacion_original, fecha_actualizacion_original)
-                        SELECT id, nombre, categoria, cantidad, proveedor, fecha_creacion, fecha_actualizacion
-                        FROM productos 
-                        WHERE id = :id";
-        
-        $stmtArchivar = $conexion->prepare($sqlArchivar);
-        $stmtArchivar->bindParam(':id', $id);
-        $stmtArchivar->execute();
-        
-        // Eliminar de la tabla principal
-        $sqlEliminar = "DELETE FROM productos WHERE id = :id";
         $stmtEliminar = $conexion->prepare($sqlEliminar);
-        $stmtEliminar->bindParam(':id', $id);
+        $stmtEliminar->bindParam(':producto_id', $producto['id']);
+        $stmtEliminar->bindParam(':nombre', $producto['nombre']);
+        $stmtEliminar->bindParam(':categoria', $producto['categoria']);
+        $stmtEliminar->bindParam(':cantidad', $producto['cantidad']);
+        $stmtEliminar->bindParam(':proveedor', $producto['proveedor']);
+        $stmtEliminar->bindParam(':fecha_creacion', $producto['fecha_creacion']);
+        $stmtEliminar->bindParam(':fecha_actualizacion', $producto['fecha_actualizacion']);
+        
         $stmtEliminar->execute();
         
+        // Eliminar de la tabla principal
+        $sqlBorrar = "DELETE FROM productos WHERE id = :id";
+        $stmtBorrar = $conexion->prepare($sqlBorrar);
+        $stmtBorrar->bindParam(':id', $id);
+        $stmtBorrar->execute();
+        
         // Verificar que se eliminó correctamente
-        if ($stmtEliminar->rowCount() > 0) {
+        if ($stmtBorrar->rowCount() > 0) {
             // Confirmar transacción
             $conexion->commit();
-            responderJSON(['producto_eliminado' => $producto], true, "Producto eliminado y archivado correctamente");
+            
+            responderJSON([
+                'producto_eliminado' => [
+                    'id' => $producto['id'],
+                    'nombre' => $producto['nombre']
+                ]
+            ], true, "Producto eliminado correctamente");
         } else {
             // Revertir transacción
             $conexion->rollBack();
