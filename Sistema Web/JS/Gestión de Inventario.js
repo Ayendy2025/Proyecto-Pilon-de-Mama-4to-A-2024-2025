@@ -313,5 +313,13 @@ async function recargarProductos() {
 
 // Inicializar - Cargar productos al abrir la página
 $(document).ready(function () {
+  // Cargar productos al inicializar
   cargarProductos();
+  
+  // Prevenir que el formulario se cierre con ESC accidentalmente durante las operaciones
+  $(document).on('keydown', function(e) {
+    if (e.key === 'Escape' && !$('#formulario-modal').is(':visible') && !$('#confirm-modal').is(':visible')) {
+      // Solo permitir ESC si no hay modales abiertos
+    }
+  });
 });

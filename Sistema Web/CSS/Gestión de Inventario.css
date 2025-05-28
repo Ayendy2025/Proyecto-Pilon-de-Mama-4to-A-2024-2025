@@ -527,3 +527,86 @@ th i {
   justify-content: flex-end;
 }
 
+
+
+
+/* Añadir al final de tu archivo CSS existente */
+
+/* Mantener ancho consistente de la tabla */
+#mitabla {
+  width: 100% !important;
+  table-layout: fixed; /* Mantiene anchos fijos */
+}
+
+/* Anchos específicos para cada columna */
+#mitabla th:nth-child(1), 
+#mitabla td:nth-child(1) { /* ID */
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+}
+
+#mitabla th:nth-child(2), 
+#mitabla td:nth-child(2) { /* Nombre */
+  width: 25% !important;
+  min-width: 150px !important;
+}
+
+#mitabla th:nth-child(3), 
+#mitabla td:nth-child(3) { /* Categoría */
+  width: 20% !important;
+  min-width: 120px !important;
+}
+
+#mitabla th:nth-child(4), 
+#mitabla td:nth-child(4) { /* Cantidad */
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  text-align: center !important;
+}
+
+#mitabla th:nth-child(5), 
+#mitabla td:nth-child(5) { /* Proveedor */
+  width: 25% !important;
+  min-width: 150px !important;
+}
+
+#mitabla th:nth-child(6), 
+#mitabla td:nth-child(6) { /* Acciones */
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+}
+
+/* Asegurar que los botones de acción mantengan su tamaño */
+td.acciones button {
+  width: 35px !important;
+  height: 35px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+td.acciones button i {
+  font-size: 14px !important;
+}
+
+/* Prevenir que la tabla cambie de tamaño durante la carga */
+.dataTables_wrapper {
+  min-height: 400px; /* Altura mínima para prevenir saltos */
+}
+
+/* Transición suave para cambios */
+#mitabla tbody tr {
+  transition: none !important; /* Remover transiciones que pueden causar parpadeos */
+}
+
+/* Estabilizar el header de la tabla */
+#mitabla thead th {
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
