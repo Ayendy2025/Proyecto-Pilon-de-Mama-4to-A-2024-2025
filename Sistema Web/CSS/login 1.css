@@ -4,7 +4,7 @@ body {
   font-size: 14px;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #F2E3D5 0%, #e6d5c1 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -18,10 +18,10 @@ body {
   padding: 15px;
   max-width: 320px;
   width: 85%;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 35px rgba(255, 96, 0, 0.15);
   border-radius: 12px;
   margin: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 96, 0, 0.1);
 }
 
 /* Encabezado de la tarjeta */
@@ -33,7 +33,7 @@ body {
 .card-header h1 {
   font-size: 1.4em;
   margin: 10px 0 5px 0;
-  color: #2d3748;
+  color: #262626;
   font-weight: 600;
 }
 
@@ -41,12 +41,12 @@ body {
   border-radius: 50%;
   max-width: 70px;
   margin-bottom: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 96, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 96, 0, 0.2);
 }
 
 .subtitle {
-  color: #718096;
+  color: #666;
   font-size: 0.85em;
   margin: 0;
   font-weight: 400;
@@ -60,7 +60,7 @@ body {
 .form-group label {
   display: block;
   margin-bottom: 6px;
-  color: #4a5568;
+  color: #262626;
   font-weight: 500;
   font-size: 0.9em;
 }
@@ -76,7 +76,7 @@ body {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #a0aec0;
+  color: #999;
   font-size: 14px;
   z-index: 2;
 }
@@ -88,12 +88,12 @@ input[type="password"] {
   width: 100%;
   padding: 10px 12px 10px 35px;
   margin: 0;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #e6d5c1;
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 0.9em;
   font-family: inherit;
-  background: #fafafa;
+  background: #F2E3D5;
   transition: all 0.3s ease;
 }
 
@@ -101,20 +101,20 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #FF6000;
   background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 96, 0, 0.1);
 }
 
 input[type="text"]:focus + .input-icon,
 input[type="email"]:focus + .input-icon,
 input[type="password"]:focus + .input-icon {
-  color: #667eea;
+  color: #FF6000;
 }
 
 /* Estilo del botón */
 .login-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF6000 0%, #e55000 100%);
   color: white;
   padding: 10px 16px;
   border: none;
@@ -130,7 +130,8 @@ input[type="password"]:focus + .input-icon {
 
 .login-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 96, 0, 0.4);
+  background: linear-gradient(135deg, #e55000 0%, #cc4800 100%);
 }
 
 .login-button:disabled {
@@ -161,36 +162,36 @@ input[type="password"]:focus + .input-icon {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #a0aec0;
+  color: #999;
   font-size: 14px;
   user-select: none;
   transition: color 0.3s ease;
 }
 
 .password-toggle:hover {
-  color: #667eea;
+  color: #FF6000;
 }
 
 /* Pista de contraseña */
 .password-hint {
   font-size: 0.85em;
-  color: #a0aec0;
+  color: #999;
   margin: 8px 0 0 0;
   min-height: 1.2em;
   transition: color 0.3s ease;
 }
 
 .password-hint.error {
-  color: #e53e3e;
+  color: #d63031;
 }
 
 .password-hint.success {
-  color: #38a169;
+  color: #00b894;
 }
 
 /* Mensajes de error */
 .error-message {
-  color: #e53e3e;
+  color: #d63031;
   font-size: 0.85em;
   margin-top: 6px;
   display: flex;
@@ -203,24 +204,24 @@ input[type="password"]:focus + .input-icon {
   margin-top: 18px;
   text-align: center;
   padding-top: 15px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid rgba(255, 96, 0, 0.2);
 }
 
 .extra-links p {
   font-size: 0.85em;
-  color: #718096;
+  color: #666;
   margin: 0;
 }
 
 .extra-links a {
   text-decoration: none;
-  color: #667eea;
+  color: #FF6000;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .extra-links a:hover {
-  color: #5a67d8;
+  color: #e55000;
   text-decoration: underline;
 }
 
