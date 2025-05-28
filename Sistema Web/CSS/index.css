@@ -2,7 +2,7 @@ body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #F2E3D5;
+  background-color: #d5dff2;
   transition: background-color 0.3s ease;
 }
 
@@ -12,7 +12,7 @@ body {
   /* ✅ Ya no tiene animación aquí para no afectar el menú */
 }
 
-/* Menú lateral  #725555*/
+/* Menú lateral  #262626*/
 .sidebar {
   width: 252px;
   background-color: #262626;

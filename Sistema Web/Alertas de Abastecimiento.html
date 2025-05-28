@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alertas de Abastecimiento - El Pilón de Mamá</title>
+  <link rel="stylesheet" href="CSS/Alertas de Abastecimiento.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Alertas de Abastecimiento</h1>
+      <div class="acciones-superiores">
+        <button class="volver-btn" onclick="salirDelModulo()">
+          <i class="fas fa-arrow-left"></i> Volver al Menú
+        </button>
+      </div>
+    </header>
+
+    <table id="tabla-alertas" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Cantidad</th>
+          <th>Proveedor</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-alertas">
+        <!-- Aquí irán los productos con bajo stock -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="JS/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="JS/Alertas de Abastecimiento.js"></script>
+</body>
+</html>
