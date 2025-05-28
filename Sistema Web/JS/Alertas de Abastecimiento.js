@@ -10,7 +10,7 @@ $(document).ready(function () {
           const fila = document.createElement("tr");
 
           // Aplica clase según cantidad
-          if (producto.cantidad == 0) {
+            if (producto.cantidad <= 5) {
             fila.classList.add("fila-roja");
           } else if (producto.cantidad < 10) {
             fila.classList.add("fila-amarilla");
