@@ -616,7 +616,7 @@ td.acciones button i {
   color: white !important;
   border: none !important;
   padding: 8px 18px !important; /* Menor padding */
-  border-radius: 8px !important;
+  border-radius: 5px !important;
   cursor: pointer;
   font-size: 0.85rem !important; /* Solo el texto */
   font-weight: 600;
