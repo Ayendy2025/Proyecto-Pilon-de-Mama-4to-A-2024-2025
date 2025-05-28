@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 <body>
+
   <div class="container">
     <header>
       <h1>Letras de Reporte</h1>
-      <p class="subtitulo">Visualiza y exporta el estado actual del inventario</p>
+      <span class="descripcion">Exporta el estado actual del inventario</span>
       <div class="acciones-superiores">
         <button class="volver-btn" onclick="salirDelModulo()">
           <i class="fas fa-arrow-left"></i> Volver al Menú
@@ -34,11 +34,12 @@
         </tr>
       </thead>
       <tbody id="cuerpo-tabla">
-        <!-- Se llena con JS desde PHP -->
+        <!-- Datos dinámicos desde JS -->
       </tbody>
     </table>
   </div>
 
+  <!-- SCRIPTS -->
   <script src="JS/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
@@ -47,6 +48,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-  <script src="JS/letras_reporte.js"></script>
+  <script src="JS/Letras de Reportes.js"></script>
 </body>
 </html>

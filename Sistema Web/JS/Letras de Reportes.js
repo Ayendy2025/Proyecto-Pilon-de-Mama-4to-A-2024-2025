@@ -1,9 +1,10 @@
+// Cargar los productos al iniciar
 $(document).ready(function () {
-  fetch("obtener_productos.php")
+  fetch("PHP/obtener_productos.php")
     .then(res => res.json())
     .then(data => {
       if (data.exito) {
-        const tabla = $('#tabla-reportes').DataTable({
+        $('#tabla-reportes').DataTable({
           data: data.datos,
           columns: [
             { data: 'id' },
@@ -18,12 +19,12 @@ $(document).ready(function () {
           buttons: [
             {
               extend: 'excelHtml5',
-              text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+              text: '<i class="fas fa-file-excel"></i> Excel',
               className: 'add-btn'
             },
             {
               extend: 'pdfHtml5',
-              text: '<i class="fas fa-file-pdf"></i> Exportar a PDF',
+              text: '<i class="fas fa-file-pdf"></i> PDF',
               className: 'eliminados-btn',
               orientation: 'landscape',
               pageSize: 'A4'
@@ -39,14 +40,16 @@ $(document).ready(function () {
           }
         });
       } else {
-        alert("❌ No se pudo cargar el inventario");
+        alert("❌ Error: " + data.mensaje);
       }
     })
     .catch(error => {
-      console.error("Error al cargar productos:", error);
+      console.error("Error al obtener datos:", error);
+      alert("❌ No se pudo conectar al servidor.");
     });
 });
 
+// Volver al menú
 function salirDelModulo() {
   const contenedor = document.querySelector(".container");
   contenedor.classList.add("salida");

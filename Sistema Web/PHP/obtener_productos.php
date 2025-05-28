@@ -1,48 +1,40 @@
 <?php
-// Incluir archivo de conexión
+// Incluir conexión PDO (asegúrate de que 'conexion.php' define la variable $conexion como instancia PDO)
 require_once 'conexion.php';
 
-// Configurar headers para permitir peticiones AJAX
+// Encabezados para permitir llamadas AJAX
+header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: GET');
 
-// Manejar peticiones OPTIONS (preflight)
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    exit(0);
-}
-
-// Función para responder en JSON
-function responderJSON($data, $exito, $mensaje = '') {
+// Verificamos que sea GET
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     echo json_encode([
-        'exito' => $exito,
-        'mensaje' => $mensaje,
-        'datos' => $data
+        'exito' => false,
+        'mensaje' => 'Método no permitido',
+        'datos' => []
     ]);
     exit;
 }
 
 try {
-    // Consulta para obtener todos los productos
     $sql = "SELECT id, nombre, categoria, cantidad, proveedor, fecha_creacion, fecha_actualizacion 
-            FROM productos 
-            ORDER BY id ASC";
-    
+            FROM productos ORDER BY id ASC";
     $stmt = $conexion->prepare($sql);
     $stmt->execute();
-    
-    // Obtener todos los resultados
+
     $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Responder con los productos
-    responderJSON($productos, true, "Productos obtenidos correctamente");
 
-} catch(PDOException $e) {
-    // Error en la consulta
-    responderJSON([], false, "Error al obtener productos: " . $e->getMessage());
-} catch(Exception $e) {
-    // Error general
-    responderJSON([], false, "Error inesperado: " . $e->getMessage());
+    echo json_encode([
+        'exito' => true,
+        'mensaje' => 'Productos obtenidos correctamente',
+        'datos' => $productos
+    ]);
+} catch (PDOException $e) {
+    echo json_encode([
+        'exito' => false,
+        'mensaje' => 'Error al obtener productos: ' . $e->getMessage(),
+        'datos' => []
+    ]);
 }
-
 ?>
