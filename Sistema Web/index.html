@@ -6,31 +6,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="CSS/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
-
   <div class="dashboard">
     <aside class="sidebar">
-      <h2>El Pilón de Mamá</h2>
-      <ul>
-        <li><a href="Gestión de Inventario.html"><i class="fas fa-boxes"></i> Gestión de Inventario</a></li>
-        <li><a href="Letras de Reporte.html"><i class="fas fa-file-alt"></i> Letras de Reporte</a></li>
-        <li><a href="Alertas de Abastecimiento.html"><i class="fas fa-bell"></i> Alertas de Abastecimiento</a></li>
-        <li><a href="#"><i class="fas fa-search"></i> Consulta</a></li>
-        <li><a href="#" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
-      </ul>
+      <div class="sidebar-header">
+        <div class="company-logo">
+          <img src="IMAGENES\Logo pilon de mama.jpg" alt="El Pilón de Mamá Logo">
+        </div>
+        <h2>El Pilón de Mamá</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="Gestión de Inventario.html"><i class="fas fa-boxes"></i><span>Gestión de Inventario</span></a></li>
+          <li><a href="Letras de Reporte.html"><i class="fas fa-file-alt"></i><span>Letras de Reporte</span></a></li>
+          <li><a href="Alertas de Abastecimiento.html"><i class="fas fa-bell"></i><span>Alerta de Abastecimiento</span></a></li>
+          <li><a href="#" onclick="abrirManual()"><i class="fas fa-book"></i><span>Manual de Usuario</span></a></li>
+          <li><a href="login 2.html" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span></a></li>
+        </ul>
+      </nav>
     </aside>
 
     <main class="main-content">
-      <div class="contenido-bienvenida animate">
-        <h1>¡Bienvenido, <span id="nombreUsuario"></span>!</h1>
-        <p>Selecciona una opción del menú para comenzar.</p>
+      <div class="main-header">
+        <h1 class="welcome-title animate">¡Bienvenido!</h1>
+        <p class="welcome-subtitle animate">Gestiona tu inventario de manera eficiente y sencilla</p>
+      </div>
+
+      <div class="dashboard-content">
+        <!-- Acceso Rápido -->
+        <div class="quick-access">
+          <h2 class="section-title animate">
+            <i class="fas fa-rocket"></i>
+            Acceso Rápido
+          </h2>
+          
+          <div class="cards-grid">
+            <div class="access-card inventory-card animate animate-delay-1" onclick="window.location.href='Gestión de Inventario.html'">
+              <div class="card-icon">
+                <i class="fas fa-boxes"></i>
+              </div>
+              <h3 class="card-title">Gestión de Inventario</h3>
+              <p class="card-description">Administra productos, controla stock y actualiza precios de manera eficiente</p>
+            </div>
+
+            <div class="access-card reports-card animate animate-delay-2" onclick="window.location.href='Letras de Reporte.html'">
+              <div class="card-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <h3 class="card-title">Reportes</h3>
+              <p class="card-description">Genera informes detallados de ventas, inventario y movimientos</p>
+            </div>
+
+            <div class="access-card alerts-card animate animate-delay-3" onclick="window.location.href='Alertas de Abastecimiento.html'">
+              <div class="card-icon">
+                <i class="fas fa-bell"></i>
+              </div>
+              <h3 class="card-title">Alertas</h3>
+              <p class="card-description">Recibe notificaciones de stock bajo</p>
+            </div>
+
+            <div class="access-card manual-card animate animate-delay-4" onclick="window.location.href='   '">
+              <div class="card-icon">
+                <i class="fas fa-book"></i>
+              </div>
+              <h3 class="card-title">Manual de Usuario</h3>
+              <p class="card-description">Guía completa para usar todas las funciones del sistema</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas Rápidas -->
+        <div class="quick-stats">
+          <h2 class="section-title animate">
+            <i class="fas fa-chart-line"></i>
+            Vista General
+          </h2>
+          
+          <div class="stats-grid">
+            <div class="stat-card animate animate-delay-1">
+              <div class="stat-number" id="totalProducts">156</div>
+              <div class="stat-label">Productos Totales</div>
+            </div>
+            
+            <div class="stat-card animate animate-delay-2">
+              <div class="stat-number" id="lowStock">12</div>
+              <div class="stat-label">Stock Bajo</div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
-  <script src="JS/index.js"></script>
 
+  <script src="JS\index.js"></script>
 </body>
 </html>
