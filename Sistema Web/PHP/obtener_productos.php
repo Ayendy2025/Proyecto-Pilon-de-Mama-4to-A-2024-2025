@@ -12,6 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
+// Función para responder en JSON
+function responderJSON($data, $exito, $mensaje = '') {
+    echo json_encode([
+        'exito' => $exito,
+        'mensaje' => $mensaje,
+        'datos' => $data
+    ]);
+    exit;
+}
+
 try {
     // Consulta para obtener todos los productos
     $sql = "SELECT id, nombre, categoria, cantidad, proveedor, fecha_creacion, fecha_actualizacion 
@@ -26,7 +36,7 @@ try {
     
     // Responder con los productos
     responderJSON($productos, true, "Productos obtenidos correctamente");
-    
+
 } catch(PDOException $e) {
     // Error en la consulta
     responderJSON([], false, "Error al obtener productos: " . $e->getMessage());
@@ -34,4 +44,5 @@ try {
     // Error general
     responderJSON([], false, "Error inesperado: " . $e->getMessage());
 }
+
 ?>
