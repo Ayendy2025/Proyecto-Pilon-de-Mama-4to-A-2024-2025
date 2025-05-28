@@ -39,7 +39,7 @@ body {
 
 .card-header img {
   border-radius: 50%;
-  max-width: 70px;
+  max-width: 100px;
   margin-bottom: 10px;
   border: 2px solid rgba(255, 96, 0, 0.3);
   box-shadow: 0 4px 15px rgba(255, 96, 0, 0.2);
@@ -238,7 +238,7 @@ input[type="password"]:focus + .input-icon {
   }
 
   .card-header img {
-    max-width: 150px;
+    max-width: 100px;
   }
 
   input[type="text"],
