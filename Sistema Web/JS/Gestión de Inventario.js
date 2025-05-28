@@ -56,14 +56,33 @@ async function cargarProductos() {
   }
 }
 
+// Variable global para mantener la instancia de DataTable
+let tablaDataTable = null;
+
 // Mostrar productos en la tabla
 function mostrarProductos() {
-  let paginaActual = 0;
-  if ($.fn.DataTable.isDataTable('#mitabla')) {
-    paginaActual = $('#mitabla').DataTable().page();
-    $('#mitabla').DataTable().clear().destroy();
+  // Guardar estado actual si la tabla ya existe
+  let estadoGuardado = {
+    pagina: 0,
+    busqueda: '',
+    orden: [],
+    longitudPagina: 10
+  };
+  
+  if (tablaDataTable && $.fn.DataTable.isDataTable('#mitabla')) {
+    estadoGuardado = {
+      pagina: tablaDataTable.page(),
+      busqueda: tablaDataTable.search(),
+      orden: tablaDataTable.order(),
+      longitudPagina: tablaDataTable.page.len()
+    };
+    
+    // Destruir la tabla existente
+    tablaDataTable.clear().destroy();
+    tablaDataTable = null;
   }
 
+  // Limpiar y regenerar el contenido de la tabla
   tabla.innerHTML = "";
   productos.forEach((prod, index) => {
     const fila = document.createElement("tr");
@@ -74,24 +93,62 @@ function mostrarProductos() {
       <td>${prod.cantidad}</td>
       <td>${prod.proveedor}</td>
       <td class="acciones">
-        <button onclick="editarProducto(${index})"><i class="fas fa-edit"></i></button>
-        <button onclick="eliminarProducto(${index})"><i class="fas fa-trash"></i></button>
+        <button onclick="editarProducto(${index})" title="Editar">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button onclick="eliminarProducto(${index})" title="Eliminar">
+          <i class="fas fa-trash"></i>
+        </button>
       </td>
     `;
     tabla.appendChild(fila);
   });
 
-  const table = $('#mitabla').DataTable({
+  // Reinicializar DataTable con configuración mejorada
+  tablaDataTable = $('#mitabla').DataTable({
     language: {
       url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
     },
-    columnDefs: [{ orderable: false, targets: -1 }],
-    order: [],
-    stateSave: false
+    columnDefs: [
+      { 
+        orderable: false, 
+        targets: -1, // Última columna (Acciones)
+        width: "120px", // Ancho fijo para columna de acciones
+        className: "text-center"
+      },
+      {
+        targets: 0, // Primera columna (ID)
+        width: "60px"
+      },
+      {
+        targets: 3, // Columna cantidad
+        width: "80px",
+        className: "text-center"
+      }
+    ],
+    order: estadoGuardado.orden.length > 0 ? estadoGuardado.orden : [[0, 'asc']], // Orden por ID por defecto
+    pageLength: estadoGuardado.longitudPagina,
+    stateSave: false, // Mantener en false para control manual
+    autoWidth: false, // Desactivar auto-width para mejor control
+    responsive: false, // Desactivar responsive para mantener consistencia
+    searching: true,
+    paging: true,
+    info: true,
+    drawCallback: function(settings) {
+      // Callback que se ejecuta después de cada redibujado
+      // Aquí podrías agregar lógica adicional si necesitas
+    }
   });
 
-  table.page(paginaActual).draw('page');
+  // Restaurar el estado guardado
+  if (estadoGuardado.busqueda) {
+    tablaDataTable.search(estadoGuardado.busqueda);
+  }
+  
+  // Ir a la página guardada y redibujar
+  tablaDataTable.page(estadoGuardado.pagina).draw('page');
 }
+
 
 // Abrir formulario
 function abrirFormulario() {
