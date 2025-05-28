@@ -615,10 +615,10 @@ td.acciones button i {
   background: linear-gradient(90deg, #FF6000 60%, #F24405 100%) !important;
   color: white !important;
   border: none !important;
-  padding: 10px 20px !important;
+  padding: 8px 18px !important; /* Menor padding */
   border-radius: 8px !important;
   cursor: pointer;
-  font-size: 10px !important;
+  font-size: 0.85rem !important; /* Solo el texto */
   font-weight: 600;
   box-shadow: 0 2px 8px #ff60002a;
   transition: background 0.3s, transform 0.2s;
@@ -627,5 +627,10 @@ td.acciones button i {
 
 .dt-button:hover {
   background: linear-gradient(90deg, #F24405 60%, #FF6000 100%) !important;
-  transform: scale(1.05);
+  transform: scale(1.05) !important;
+}
+
+.dt-button > span,
+.dt-button > i {
+  font-size: 0.89rem !important;
 }
