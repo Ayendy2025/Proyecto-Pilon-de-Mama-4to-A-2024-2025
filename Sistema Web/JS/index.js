@@ -1,38 +1,17 @@
- // URL del Manual de Usuario (Google Docs)
-    const MANUAL_URL = 'https://docs.google.com/document/d/TU_ID_DEL_DOCUMENTO/edit?usp=sharing';
-    
-    // Función para abrir el manual de usuario
-    function abrirManual() {
-      // Opción 1: Abrir en nueva pestaña
-      window.open(MANUAL_URL, '_blank');
-      
-      // Opción 2: Si prefieres abrir en la misma ventana, usa:
-      // window.location.href = MANUAL_URL;
-    }
+// Función para abrir el manual
+function abrirManual() {
+  window.open('https://docs.google.com/document/d/TU_ID_DEL_DOCUMENTO/edit?usp=sharing', '_blank');
+}
 
-    // Función para cerrar sesión (mantenida del JS original)
-    function cerrarSesion() {
-      if (confirm('¿Está seguro de que desea cerrar sesión?')) {
-        // Aquí iría la lógica para cerrar sesión
-        alert('Sesión cerrada exitosamente');
-        // window.location.href = 'login.html';
-      }
-    }
+// Función para cerrar sesión
+function cerrarSesion() {
+  if (confirm('¿Está seguro de que desea cerrar sesión?')) {
+    alert('Sesión cerrada exitosamente');
+    window.location.href = 'login 2.html';
+  }
+}
 
-    // Simular datos dinámicos
-    document.addEventListener('DOMContentLoaded', function() {
-      // Obtener nombre de usuario (puedes cambiarlo por datos reales)
-      const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Administrador';
-      document.getElementById('nombreUsuario').textContent = nombreUsuario;
-      
-      // Simular actualización de estadísticas (conectar con tu base de datos)
-      setTimeout(() => {
-        // Aquí podrías hacer llamadas AJAX para obtener datos reales
-        console.log('Dashboard cargado correctamente');
-      }, 1000);
-    });
-
-    // Función para actualizar estadísticas (conectar con tu backend)
+// Actualizar estadísticas reales desde PHP
 function actualizarEstadisticas() {
   fetch('PHP/dashboard_estadisticas.php')
     .then(res => res.json())
@@ -49,7 +28,13 @@ function actualizarEstadisticas() {
     });
 }
 
+// Al cargar la página
 document.addEventListener('DOMContentLoaded', function () {
-  // ...
+  const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Administrador';
+  const nombreElemento = document.getElementById('nombreUsuario');
+  if (nombreElemento) {
+    nombreElemento.textContent = nombreUsuario;
+  }
+
   actualizarEstadisticas();
 });

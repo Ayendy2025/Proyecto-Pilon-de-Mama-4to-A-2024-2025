@@ -9,7 +9,7 @@ try {
     $total = $totalQuery->fetch(PDO::FETCH_ASSOC)['total'];
 
     // Productos con stock bajo (5 o menos)
-    $bajoQuery = $conexion->query("SELECT COUNT(*) as bajos FROM productos WHERE cantidad <= 5");
+    $bajoQuery = $conexion->query("SELECT COUNT(*) as bajos FROM productos WHERE cantidad <= 10");
     $bajos = $bajoQuery->fetch(PDO::FETCH_ASSOC)['bajos'];
 
     echo json_encode([
