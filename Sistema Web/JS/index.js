@@ -1,6 +1,6 @@
 // Función para abrir el manual
 function abrirManual() {
-  window.open('https://docs.google.com/document/d/TU_ID_DEL_DOCUMENTO/edit?usp=sharing', '_blank');
+  window.open('https://sites.google.com/view/manual-sistema-pilonde-mama/inicio?authuser=0');
 }
 
 // Función para cerrar sesión
