@@ -33,12 +33,23 @@
     });
 
     // Función para actualizar estadísticas (conectar con tu backend)
-    function actualizarEstadisticas() {
-      // Ejemplo de como podrías actualizar las estadísticas
-      // fetch('/api/estadisticas')
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     document.getElementById('totalProducts').textContent = data.totalProducts;
-      //     document.getElementById('lowStock').textContent = data.lowStock;
-      //   });
-    }
+function actualizarEstadisticas() {
+  fetch('PHP/dashboard_estadisticas.php')
+    .then(res => res.json())
+    .then(data => {
+      if (data.exito) {
+        document.getElementById('totalProducts').textContent = data.totalProductos;
+        document.getElementById('lowStock').textContent = data.stockBajo;
+      } else {
+        console.error('⚠️ Error desde PHP:', data.mensaje);
+      }
+    })
+    .catch(err => {
+      console.error('❌ Error de red:', err);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // ...
+  actualizarEstadisticas();
+});
