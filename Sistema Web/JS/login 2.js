@@ -69,6 +69,7 @@ function login(event) {
     .then(data => {
       if (data.exito) {
         localStorage.setItem("usuarioActivo", data.usuario);
+        localStorage.setItem("nombreUsuario", data.usuario); // 👈 Esta línea asegura que aparezca en el panel
         window.location.href = "index.html";
       } else {
         passwordError.textContent = data.mensaje;
