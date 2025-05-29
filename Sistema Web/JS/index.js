@@ -17,8 +17,9 @@ function actualizarEstadisticas() {
     .then(res => res.json())
     .then(data => {
       if (data.exito) {
-        document.getElementById('totalProducts').textContent = data.totalProductos;
-        document.getElementById('lowStock').textContent = data.stockBajo;
+       animarContador('totalProducts', data.totalProductos);
+animarContador('lowStock', data.stockBajo);
+
       } else {
         console.error('⚠️ Error desde PHP:', data.mensaje);
       }
@@ -38,3 +39,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   actualizarEstadisticas();
 });
+
+
+function animarContador(idElemento, valorFinal, duracion = 1000) {
+  const elemento = document.getElementById(idElemento);
+  let inicio = 0;
+  const incremento = valorFinal / (duracion / 16); // ~60fps
+  const intervalo = setInterval(() => {
+    inicio += incremento;
+    if (inicio >= valorFinal) {
+      elemento.textContent = valorFinal;
+      clearInterval(intervalo);
+    } else {
+      elemento.textContent = Math.floor(inicio);
+    }
+  }, 16);
+}
